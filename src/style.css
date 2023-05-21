@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+hmtl,
+body {
+  background-color: #141414;
+  list-style: none;
+  scroll-behavior: smooth;
+}
