@@ -1,0 +1,3 @@
+-- info onclick
+-- fav receitas (local storage)
+-- bibliotecas (the meals db, phosphoricons)
