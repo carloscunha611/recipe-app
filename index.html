@@ -21,7 +21,7 @@
   <body>
     <main class="mobile-container">
       <header>
-        <input type="text" id="search-temr" />
+        <input type="text" id="search-temr" placeholder="Search" />
         <button id="search"><i class="ph-bold ph-magnifying-glass"></i></button>
       </header>
 
@@ -32,5 +32,15 @@
 
       <section class="meals" id="meals" onclick="fovorite()"></section>
     </main>
+
+    <section class="popup-info-container hidden" id="meal-info-popup">
+      <div class="popup">
+        <button id="close-popup" class="close-popup">
+          <i class="ph-fill ph-x-square"></i>
+        </button>
+
+        <div class="meal-popup" id="meal-info"></div>
+      </div>
+    </section>
   </body>
 </html>

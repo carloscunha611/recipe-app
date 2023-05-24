@@ -1,5 +1,13 @@
-const meals = document.querySelector('#meals')
+const meals_el = document.querySelector('#meals')
 const favContainer = document.getElementById('fav-meals')
+
+const search_temr = document.querySelector('#search-temr')
+const search_btn = document.querySelector('#search')
+
+const meal_info_popup = document.querySelector('#meal-info-popup')
+const meal_info_el = document.querySelector('#meal-info')
+const close_popup = document.querySelector('#close-popup')
+
 getRandomMeal()
 fetchFavMeals()
 
@@ -30,9 +38,14 @@ async function getMealById(id) {
   }
 }
 async function getMealBySearch(term) {
-  const meals = await fetch(
+  const resp = await fetch(
     'https://www.themealdb.com/api/json/v1/1/search.php?s=' + term
   )
+
+  const respData = await resp.json()
+  const meals = respData.meals
+
+  return meals
 }
 
 function addMeal(mealData, random = false) {
@@ -66,7 +79,11 @@ function addMeal(mealData, random = false) {
 
     fetchFavMeals()
   })
-  meals.appendChild(meal)
+
+  meal.addEventListener('click', () => {
+    showMealInfo(mealData)
+  })
+  meals_el.appendChild(meal)
 }
 
 function addMealLS(mealId) {
@@ -118,5 +135,55 @@ function addMealToFav(mealData) {
     removeMealLS(mealData.idMeal)
     fetchFavMeals()
   })
+  favMeal.addEventListener('click', () => {
+    showMealInfo(mealData)
+  })
   favContainer.appendChild(favMeal)
 }
+
+function showMealInfo(mealData) {
+  meal_info_el.innerHTML = ''
+  const meal_el = document.createElement('div')
+  const ingredients = []
+  for (let i = 1; i < 20; i++) {
+    if (mealData['strIngredient' + i]) {
+      ingredients.push(
+        `${mealData['strIngredient' + i]} - ${mealData['strMeasure' + i]}`
+      )
+    } else break
+  }
+  meal_el.innerHTML = `
+    <h1>${mealData.strMeal}</h1>
+    <img
+      src="${mealData.strMealThumb}"
+      alt="${mealData.strMeal}"
+    />
+
+    <p>
+      ${mealData.strInstructions}
+    </p>
+    <h3>Ingredients:</h3>
+    <ul>
+      ${ingredients.map(ing => `<li>${ing}</li>`).join('')}
+    </ul>
+  `
+  meal_info_el.appendChild(meal_el)
+  meal_info_popup.classList.remove('hidden')
+}
+
+search_btn.addEventListener('click', async () => {
+  meals_el.innerHTML = ''
+  const search = search_temr.value
+
+  const meals = await getMealBySearch(search)
+
+  if (meals) {
+    meals.forEach(meal => {
+      addMeal(meal)
+    })
+  }
+})
+
+close_popup.addEventListener('click', () => {
+  meal_info_popup.classList.add('hidden')
+})
