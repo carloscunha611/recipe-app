@@ -1,5 +1,5 @@
 const meals_el = document.querySelector('#meals')
-const favContainer = document.getElementById('fav-meals')
+const fav_meals = document.querySelector('#fav-meals')
 
 const search_temr = document.querySelector('#search-temr')
 const search_btn = document.querySelector('#search')
@@ -38,35 +38,41 @@ async function getMealById(id) {
   }
 }
 async function getMealBySearch(term) {
-  const resp = await fetch(
-    'https://www.themealdb.com/api/json/v1/1/search.php?s=' + term
-  )
-
-  const respData = await resp.json()
-  const meals = respData.meals
-
-  return meals
+  try {
+    const resp = await fetch(
+      'https://www.themealdb.com/api/json/v1/1/search.php?s=' + term
+    )
+    const respData = await resp.json()
+    const meals = respData.meals
+    return meals
+  } catch (error) {
+    console.log('Erro: ', error)
+  }
 }
 
 function addMeal(mealData, random = false) {
   const meal = document.createElement('div')
 
-  meal.classList.add('meal')
+  meal.classList.add('meal-container')
 
-  meal.innerHTML = `<div class="meal">
-          <div class="meal-header">
-          ${random ? ` <span class="random"> Random Recipe </span>` : ''}
-            
-            <img
-              src="${mealData.strMealThumb}"
-              alt="${mealData.strMeal}"
-            />
-          </div>
-          <div class="meal-body">
-            <h4>${mealData.strMeal}</h4>
-            <button class="fav-btn" id = 'fav-btn'><i class="ph-fill ph-star"></i></button>
-          </div>
-        </div>`
+  const build = `
+  <div class="meal">
+    <div class="meal-header">
+       <span class="random"> ${mealData.strCategory} </span>        
+        <img class = 'meal-img'
+          src="${mealData.strMealThumb}"
+          alt="${mealData.strMeal}"
+        />
+      </div>
+    <div class="meal-body">
+      <h4>${mealData.strMeal}</h4>
+      <button class="fav-btn" id = 'fav-btn'><i class="ph-fill ph-star"></i></button>
+      </div>
+    </div>
+      `
+
+  meal.innerHTML = build
+
   const btn = meal.querySelector('.fav-btn')
   btn.addEventListener('click', () => {
     if (btn.classList.contains('active')) {
@@ -80,7 +86,8 @@ function addMeal(mealData, random = false) {
     fetchFavMeals()
   })
 
-  meal.addEventListener('click', () => {
+  const img = meal.querySelector('.meal-header')
+  img.addEventListener('click', () => {
     showMealInfo(mealData)
   })
   meals_el.appendChild(meal)
@@ -108,7 +115,7 @@ function getMealsLS() {
 }
 
 async function fetchFavMeals() {
-  favContainer.innerHTML = ''
+  fav_meals.innerHTML = ''
   const mealIds = getMealsLS()
   const meals = []
   for (let i = 0; i < mealIds.length; i++) {
@@ -121,7 +128,6 @@ async function fetchFavMeals() {
 
 function addMealToFav(mealData) {
   const favMeal = document.createElement('li')
-
   favMeal.innerHTML = `
   <img
     src="${mealData.strMealThumb}"
@@ -130,20 +136,22 @@ function addMealToFav(mealData) {
   <button class = 'clear'><i class="ph-fill ph-x-circle"></i></button>
 `
   const btn = favMeal.querySelector('.clear')
-
+  const img = favMeal.querySelector('img')
   btn.addEventListener('click', () => {
     removeMealLS(mealData.idMeal)
     fetchFavMeals()
   })
-  favMeal.addEventListener('click', () => {
+  img.addEventListener('click', () => {
     showMealInfo(mealData)
   })
-  favContainer.appendChild(favMeal)
+  fav_meals.appendChild(favMeal)
 }
 
 function showMealInfo(mealData) {
   meal_info_el.innerHTML = ''
+
   const meal_el = document.createElement('div')
+  meal_el.classList.add('mael-el')
   const ingredients = []
   for (let i = 1; i < 20; i++) {
     if (mealData['strIngredient' + i]) {
@@ -181,6 +189,22 @@ search_btn.addEventListener('click', async () => {
     meals.forEach(meal => {
       addMeal(meal)
     })
+  }
+})
+
+search_temr.addEventListener('keypress', async event => {
+  const keyCode = event.keyCode || event.which
+
+  if (keyCode === 13) {
+    meals_el.innerHTML = ''
+    const search = search_temr.value
+
+    const meals = await getMealBySearch(search)
+    if (meals) {
+      meals.forEach(meal => {
+        addMeal(meal)
+      })
+    }
   }
 })
 

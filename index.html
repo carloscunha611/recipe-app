@@ -13,24 +13,24 @@
     />
 
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <script src="./src/main.js" defer></script>
-    <link rel="stylesheet" href="./src/style.css" />
+    <script src="./src/js/main.js" defer></script>
+    <link rel="stylesheet" href="./src/style/style.css" />
 
     <title>Recipes App</title>
   </head>
   <body>
     <main class="mobile-container">
-      <header>
+      <header class="search">
         <input type="text" id="search-temr" placeholder="Search" />
         <button id="search"><i class="ph-bold ph-magnifying-glass"></i></button>
       </header>
 
-      <section class="fav-container">
+      <section class="fav-container carousel">
         <h3>Favorite Meals</h3>
         <ul class="fav-meals" id="fav-meals"></ul>
       </section>
 
-      <section class="meals" id="meals" onclick="fovorite()"></section>
+      <section class="meals" id="meals"></section>
     </main>
 
     <section class="popup-info-container hidden" id="meal-info-popup">
