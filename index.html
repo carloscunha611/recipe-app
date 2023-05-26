@@ -19,10 +19,21 @@
     <title>Recipes App</title>
   </head>
   <body>
-    <main class="mobile-container">
+    <main class="mobile-container" id="mobile-container">
       <header class="search">
+        <h1 class="name">
+          <span class="n1">Cook</span> <span class="n2">Easy</span>
+        </h1>
         <input type="text" id="search-temr" placeholder="Search" />
-        <button id="search"><i class="ph-bold ph-magnifying-glass"></i></button>
+        <button id="search">
+          <lord-icon
+            src="https://cdn.lordicon.com/xfftupfv.json"
+            trigger="hover"
+            colors="primary:#f77272"
+            style="width: 25px; height: 25px"
+          >
+          </lord-icon>
+        </button>
       </header>
 
       <section class="fav-container carousel">
@@ -30,7 +41,9 @@
         <ul class="fav-meals" id="fav-meals"></ul>
       </section>
 
-      <section class="meals" id="meals"></section>
+      <section class="meals-content">
+        <ul class="meals" id="meals"></ul>
+      </section>
     </main>
 
     <section class="popup-info-container hidden" id="meal-info-popup">
@@ -42,5 +55,7 @@
         <div class="meal-popup" id="meal-info"></div>
       </div>
     </section>
+    <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
+    <script src="./src/js/icons.js"></script>
   </body>
 </html>

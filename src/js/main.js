@@ -1,3 +1,4 @@
+const mobile_container = document.querySelector('#mobile-container')
 const meals_el = document.querySelector('#meals')
 const fav_meals = document.querySelector('#fav-meals')
 
@@ -51,7 +52,7 @@ async function getMealBySearch(term) {
 }
 
 function addMeal(mealData, random = false) {
-  const meal = document.createElement('div')
+  const meal = document.createElement('li')
 
   meal.classList.add('meal-container')
 
@@ -59,7 +60,7 @@ function addMeal(mealData, random = false) {
   <div class="meal">
     <div class="meal-header">
        <span class="random"> ${mealData.strCategory} </span>        
-        <img class = 'meal-img'
+        <img loading='lazy' class = 'meal-img'
           src="${mealData.strMealThumb}"
           alt="${mealData.strMeal}"
         />
@@ -129,7 +130,7 @@ async function fetchFavMeals() {
 function addMealToFav(mealData) {
   const favMeal = document.createElement('li')
   favMeal.innerHTML = `
-  <img
+  <img loading = 'lazy'
     src="${mealData.strMealThumb}"
     alt="${mealData.strMeal}"
   /><span>${mealData.strMeal}</span>
@@ -194,6 +195,10 @@ search_btn.addEventListener('click', async () => {
 
 search_temr.addEventListener('keypress', async event => {
   const keyCode = event.keyCode || event.which
+  const meal = document.createElement('li')
+  meal.classList.add('alert')
+
+  const build = `<span class="not-found"> "${search_temr.value}" not found </span>`
 
   if (keyCode === 13) {
     meals_el.innerHTML = ''
@@ -204,6 +209,9 @@ search_temr.addEventListener('keypress', async event => {
       meals.forEach(meal => {
         addMeal(meal)
       })
+    } else {
+      meal.innerHTML = build
+      meals_el.appendChild(meal)
     }
   }
 })

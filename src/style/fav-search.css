@@ -12,21 +12,43 @@
   z-index: 999;
 }
 
+.search h1 {
+  position: absolute;
+  left: 1rem;
+}
+
+.search h1 .n1 {
+  color: var(--color_primary);
+}
+.search h1 .n2 {
+  color: var(--color_secondary);
+}
+
 .search input {
   background-color: var(--color_bg);
   border: none;
-  border-radius: 1em;
+  border-radius: 0.5em;
   padding: 0.5rem 1rem;
   color: var(--color);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search input:focus-within {
+  outline: 0.2rem solid var(--color_emphasis);
 }
 
 .search button {
   background-color: transparent;
   border: none;
   color: var(--color);
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin-left: 0.5rem;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+.search button:hover {
+  color: var(--color_primary);
 }
 
 .fav-meals,
@@ -42,7 +64,7 @@
   width: 100%;
   flex-direction: column;
   min-height: 8rem;
-  background-color: transparent;
+  background-color: var(--color_bg);
   box-shadow: var(--shadow);
   padding: 0.5rem 0rem;
   text-align: center;
@@ -57,7 +79,6 @@
 .fav-meals {
   flex-direction: row-reverse;
   width: 100%;
-
   overflow-x: auto;
 }
 
@@ -80,18 +101,23 @@
   right: -0.2rem;
   font-size: 1.2rem;
   cursor: pointer;
+  visibility: hidden;
   opacity: 0;
+  transition: all 0.3s ease;
 }
 .fav-meals li:hover .clear {
-  opacity: 0.5;
+  visibility: visible;
+  opacity: 1;
+  color: var(--color_primary);
 }
 
 .fav-meals li img {
-  border: 0.2em solid var(--color);
+  border: 0.2em solid var(--color_emphasis);
   border-radius: 50%;
   object-fit: cover;
   height: 4rem;
   width: 4rem;
+  filter: brightness(100%) contrast(100%) saturate(100%);
 }
 
 .fav-meals li span {
@@ -102,6 +128,7 @@
   text-overflow: ellipsis;
   width: 4.5rem;
 }
+
 .fav-btn.active {
   color: var(--color_secondary);
 }
