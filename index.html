@@ -21,8 +21,9 @@
   <body>
     <main class="mobile-container" id="mobile-container">
       <header class="search">
-        <h1 class="name">
+        <h1 class="logo">
           <span class="n1">Cook</span> <span class="n2">Easy</span>
+          <i class="ph-fill ph-cooking-pot"></i>
         </h1>
         <input type="text" id="search-temr" placeholder="Search" />
         <button id="search">
@@ -34,6 +35,13 @@
           >
           </lord-icon>
         </button>
+
+        <div class="toggle-switch">
+          <label class="switch-label">
+            <input type="checkbox" class="checkbox" />
+            <span class="slider"></span>
+          </label>
+        </div>
       </header>
 
       <section class="fav-container carousel">
@@ -55,6 +63,8 @@
         <div class="meal-popup" id="meal-info"></div>
       </div>
     </section>
+
+    <footer></footer>
     <script src="https://cdn.lordicon.com/bhenfmcm.js"></script>
     <script src="./src/js/icons.js"></script>
   </body>

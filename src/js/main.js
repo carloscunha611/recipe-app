@@ -1,3 +1,14 @@
+const checkbox = document.querySelector('.checkbox')
+const logo = document.querySelector('.logo')
+
+logo.addEventListener('click', () => {
+  window.location.reload()
+})
+
+checkbox.addEventListener('click', () => {
+  document.body.classList.toggle('light')
+})
+
 const mobile_container = document.querySelector('#mobile-container')
 const meals_el = document.querySelector('#meals')
 const fav_meals = document.querySelector('#fav-meals')

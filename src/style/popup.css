@@ -28,7 +28,6 @@
   padding: 1rem 2rem;
   border-radius: 0.5rem;
   overflow: auto;
-  background: var(--color_gradient2);
   background: var(--color_gradient1);
 }
 
@@ -38,7 +37,7 @@
 }
 
 .popup .meal-popup h1 {
-  color: #fbb72c;
+  color: var(--color_primary);
   text-align: center;
 }
 

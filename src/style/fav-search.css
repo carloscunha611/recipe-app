@@ -13,8 +13,14 @@
 }
 
 .search h1 {
+  display: grid;
   position: absolute;
-  left: 1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+  width: 4rem;
+  left: 0rem;
+  user-select: none;
 }
 
 .search h1 .n1 {
@@ -22,6 +28,10 @@
 }
 .search h1 .n2 {
   color: var(--color_secondary);
+}
+.search h1 i {
+  top: 0.1rem;
+  color: var(--color_primary);
 }
 
 .search input {
@@ -131,4 +141,68 @@
 
 .fav-btn.active {
   color: var(--color_secondary);
+}
+
+.toggle-switch {
+  position: absolute;
+  right: 1rem;
+  width: 5rem;
+  height: 2rem;
+  margin-left: 1rem;
+}
+
+.switch-label {
+  position: absolute;
+  width: 100%;
+  height: 2rem;
+  background-color: var(--color_bg-hero);
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.checkbox {
+  position: absolute;
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.1rem;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  outline: 2px solid var(--color_bg);
+}
+
+.checkbox:checked ~ .slider {
+  background-color: var(--color_bg-hero2);
+}
+
+.slider::before {
+  content: '';
+  position: absolute;
+  top: 0.3rem;
+  left: 0.3rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  -webkit-box-shadow: inset 12px -4px 0px 0px var(--color_bg2);
+  box-shadow: inset 12px -4px 0px 0px var(--color_bg2);
+  background-color: var(--color_bg-hero);
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.checkbox:checked ~ .slider::before {
+  -webkit-transform: translateX(50px);
+  -ms-transform: translateX(50px);
+  transform: translateX(50px);
+  background-color: var(--color_bg-hero);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.checkbox:checked ~ .slider {
+  outline: 2px solid var(--color_bg2);
 }

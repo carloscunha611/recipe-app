@@ -1,7 +1,8 @@
 @import './meal.css';
 @import './fav-search.css';
 @import './popup.css';
-
+@import './light.css';
+@import './mobile.css';
 * {
   margin: 0;
   padding: 0;
@@ -34,6 +35,15 @@
   --font_regular: 400;
   --font_medium: 500;
   --font_bold: 700;
+
+  --color_bg-hero2: #d5d0e5;
+  --color_bg2: #f3e6e8;
+  --color2: #1a1a1a;
+  --color_gradient2: linear-gradient(
+    to right,
+    var(--color_bg-hero2),
+    var(--color_bg2)
+  );
 }
 hmtl,
 body {
@@ -45,7 +55,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 ::-webkit-scrollbar {
@@ -53,7 +63,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--color_bg-hero);
+  background-color: var(--color_primary);
   border-radius: 0.1rem;
 }
 
@@ -62,6 +72,6 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-  background-color: var(--color_bg-hero);
+  background-color: var(--color_secondaryAlpha);
   width: 0.5rem;
 }

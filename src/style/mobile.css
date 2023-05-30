@@ -1,0 +1,25 @@
+@media (max-width: 428px) {
+  .toggle-switch {
+    width: 3rem;
+  }
+  .checkbox:checked ~ .slider::before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+  }
+  main.mobile-container {
+    position: fixed;
+    top: 4rem;
+    width: 100%;
+    height: 100%;
+  }
+
+  section.meals-content {
+    top: 1.5rem;
+    padding: 2rem 0;
+  }
+
+  li.meal-container:nth-last-child(1) {
+    padding-bottom: 1rem;
+  }
+}
