@@ -14,5 +14,5 @@ fazer:
 -arrumar botao de fechar do fav ok
 -pesquisar ao apertar enter
 
-- adicionar modo claro e escuro
-- adicionar responsividade
+- adicionar modo claro e escuro ok
+- adicionar responsividade ok
