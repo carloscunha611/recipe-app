@@ -33,7 +33,9 @@ async function getRandomMeal() {
 
     addMeal(randomMeal, true)
   } catch (error) {
-    console.log('Erro: ', error)
+    console.error(
+      `An error occurred while trying to generate random meal: ${error}`
+    )
   }
 }
 
@@ -46,7 +48,7 @@ async function getMealById(id) {
     const meal = respData.meals[0]
     return meal
   } catch (error) {
-    console.log('Erro: ', error)
+    console.error(`An error occurred while trying to generate the id: ${error}`)
   }
 }
 async function getMealBySearch(term) {
@@ -58,7 +60,7 @@ async function getMealBySearch(term) {
     const meals = respData.meals
     return meals
   } catch (error) {
-    console.log('Erro: ', error)
+    console.error(`An error occurred while trying to search: ${error}`)
   }
 }
 
