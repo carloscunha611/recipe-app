@@ -21,6 +21,10 @@
     height: 100%;
   }
 
+  .meal-header img {
+    filter: grayscale(0%) brightness(110%) contrast(110%) saturate(110%);
+  }
+
   section.meals-content {
     top: 1.5rem;
     padding: 2rem 0;

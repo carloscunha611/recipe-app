@@ -72,13 +72,16 @@ div.meal {
   object-fit: cover;
   height: 16rem;
   width: 100%;
-  filter: brightness(100%) contrast(100%) saturate(100%);
+  filter: grayscale(100%) brightness(100%) contrast(100%) saturate(100%);
+  transition: filter 0.3s ease;
+}
 
-  transition: all 0.3s ease;
+.meal-header img:hover,
+.meal-header img:active,
+.meal-header img:focus {
+  filter: grayscale(0%) brightness(110%) contrast(110%) saturate(110%);
 }
-.meal-header img:hover {
-  filter: brightness(110%) contrast(110%) saturate(110%);
-}
+
 .meal-body {
   position: absolute;
   display: flex;
