@@ -31,6 +31,8 @@
   --color_gradient_img: linear-gradient(to bottom, transparent, #1a1a1a 75%);
   --shadow: 0.5em 0.5em 2em -0.5em #141414;
   --shadow-b: 0px 16px 32px -20px rgba(0, 0, 0, 0.5);
+  --header-height: 4.25rem;
+  --fav-height: 7.5rem;
 
   --font_family: 'Rubik', sans-serif;
   --font_light: 300;
@@ -58,6 +60,7 @@ body {
 
 body {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {
