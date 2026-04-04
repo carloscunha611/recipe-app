@@ -1,8 +1,7 @@
 .meal-container,
 .meals-content,
 .meals,
-.alert,
-.not-found {
+.alert {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,8 +119,17 @@ div.meal:hover .meal-body {
   height: 10rem;
 }
 
-.not-found {
-  color: #f77272;
+.status-message {
   width: 100%;
   height: 100%;
+  text-align: center;
+  font-weight: var(--font_medium);
+}
+
+.status-message.error {
+  color: #f77272;
+}
+
+.status-message.info {
+  color: var(--color_emphasis);
 }

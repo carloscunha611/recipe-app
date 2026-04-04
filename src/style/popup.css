@@ -1,6 +1,6 @@
 .popup-info-container,
 .meal-popup,
-.mael-el,
+.meal-el,
 .close-popup {
   display: flex;
   align-items: center;
@@ -31,7 +31,7 @@
   background: var(--color_gradient1);
 }
 
-.mael-el {
+.meal-el {
   gap: 1rem;
   flex-direction: column;
 }

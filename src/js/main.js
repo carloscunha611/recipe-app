@@ -3,12 +3,14 @@ const logo = document.querySelector('.logo')
 const meals_el = document.querySelector('#meals')
 const fav_meals = document.querySelector('#fav-meals')
 
-const search_term = document.querySelector('#search-temr')
+const search_term = document.querySelector('#search-term')
 const search_btn = document.querySelector('#search')
 
 const meal_info_popup = document.querySelector('#meal-info-popup')
 const meal_info_el = document.querySelector('#meal-info')
 const close_popup = document.querySelector('#close-popup')
+
+let lastFocusedElement = null
 
 if (logo) {
   logo.addEventListener('click', () => {
@@ -29,13 +31,18 @@ async function getRandomMeal() {
   try {
     const resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php')
     const respData = await resp.json()
-    const randomMeal = respData.meals[0]
+    const randomMeal = respData?.meals?.[0]
 
-    addMeal(randomMeal)
+    if (randomMeal) {
+      addMeal(randomMeal)
+    } else {
+      showMealsStatus('Não foi possível carregar uma receita aleatória.', 'error')
+    }
   } catch (error) {
     console.error(
       `An error occurred while trying to generate random meal: ${error}`
     )
+    showMealsStatus('Falha de conexão ao carregar receita aleatória.', 'error')
   }
 }
 
@@ -45,7 +52,7 @@ async function getMealById(id) {
       'https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + id
     )
     const respData = await resp.json()
-    const meal = respData.meals[0]
+    const meal = respData?.meals?.[0] || null
     return meal
   } catch (error) {
     console.error(`An error occurred while trying to generate the id: ${error}`)
@@ -59,7 +66,7 @@ async function getMealBySearch(term) {
       'https://www.themealdb.com/api/json/v1/1/search.php?s=' + term
     )
     const respData = await resp.json()
-    const meals = respData.meals
+    const meals = respData?.meals || null
     return meals
   } catch (error) {
     console.error(`An error occurred while trying to search: ${error}`)
@@ -84,7 +91,7 @@ function addMeal(mealData) {
       </div>
     <div class="meal-body">
       <h4>${mealData.strMeal}</h4>
-      <button class="fav-btn ${isFavorite ? 'active' : ''}"><i class="ph-fill ph-star"></i></button>
+      <button class="fav-btn ${isFavorite ? 'active' : ''}" aria-label="Adicionar ou remover dos favoritos"><i class="ph-fill ph-star"></i></button>
       </div>
     </div>
       `
@@ -135,9 +142,29 @@ function getMealsLS() {
   return mealIds === null ? [] : mealIds
 }
 
+function showMealsStatus(message, type = 'info') {
+  meals_el.innerHTML = ''
+  const meal = document.createElement('li')
+  meal.classList.add('alert')
+  meal.innerHTML = `<span class="status-message ${type}">${message}</span>`
+  meals_el.appendChild(meal)
+}
+
+function showFavStatus(message) {
+  fav_meals.innerHTML = `<li class="fav-status">${message}</li>`
+}
+
 async function fetchFavMeals() {
-  fav_meals.innerHTML = ''
+  showFavStatus('Carregando favoritos...')
+
   const mealIds = getMealsLS()
+
+  if (!mealIds.length) {
+    showFavStatus('Você ainda não tem receitas favoritas.')
+    return
+  }
+
+  fav_meals.innerHTML = ''
 
   for (let i = 0; i < mealIds.length; i++) {
     const mealId = mealIds[i]
@@ -146,6 +173,10 @@ async function fetchFavMeals() {
     if (meal) {
       addMealToFav(meal)
     }
+  }
+
+  if (!fav_meals.children.length) {
+    showFavStatus('Não foi possível carregar os favoritos.')
   }
 }
 
@@ -156,7 +187,7 @@ function addMealToFav(mealData) {
     src="${mealData.strMealThumb}"
     alt="${mealData.strMeal}"
   /><span>${mealData.strMeal}</span>
-  <button class='clear'><i class="ph-fill ph-x-circle"></i></button>
+  <button class='clear' aria-label='Remover dos favoritos'><i class="ph-fill ph-x-circle"></i></button>
 `
 
   const btn = favMeal.querySelector('.clear')
@@ -178,7 +209,7 @@ function showMealInfo(mealData) {
   meal_info_el.innerHTML = ''
 
   const meal_el = document.createElement('div')
-  meal_el.classList.add('mael-el')
+  meal_el.classList.add('meal-el')
   const ingredients = []
 
   for (let i = 1; i < 20; i++) {
@@ -207,45 +238,64 @@ function showMealInfo(mealData) {
 
   meal_info_el.appendChild(meal_el)
   meal_info_popup.classList.remove('hidden')
-}
 
-function showNotFoundMessage(term) {
-  const meal = document.createElement('li')
-  meal.classList.add('alert')
-  meal.innerHTML = `<span class="not-found"> "${term}" not found </span>`
-  meals_el.appendChild(meal)
+  lastFocusedElement = document.activeElement
+  close_popup.focus()
 }
 
 async function handleSearch() {
-  meals_el.innerHTML = ''
   const search = search_term.value.trim()
 
   if (!search) {
+    meals_el.innerHTML = ''
     getRandomMeal()
     return
   }
 
+  showMealsStatus('Buscando receitas...', 'info')
+
   const meals = await getMealBySearch(search)
 
   if (meals && meals.length) {
+    meals_el.innerHTML = ''
     meals.forEach(meal => {
       addMeal(meal)
     })
   } else {
-    showNotFoundMessage(search)
+    showMealsStatus(`"${search}" não encontrado.`, 'error')
   }
 }
 
-search_btn.addEventListener('click', handleSearch)
+if (search_btn) {
+  search_btn.addEventListener('click', handleSearch)
+}
 
-search_term.addEventListener('keypress', async event => {
-  const keyCode = event.keyCode || event.which
+if (search_term) {
+  search_term.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      handleSearch()
+    }
+  })
+}
 
-  if (keyCode === 13) {
-    handleSearch()
+function hideMealInfo() {
+  meal_info_popup.classList.add('hidden')
+
+  if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+    lastFocusedElement.focus()
+  }
+}
+
+close_popup.addEventListener('click', hideMealInfo)
+
+meal_info_popup.addEventListener('click', event => {
+  if (event.target === meal_info_popup) {
+    hideMealInfo()
   }
 })
 
-close_popup.addEventListener('click', () => {
-  meal_info_popup.classList.add('hidden')
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !meal_info_popup.classList.contains('hidden')) {
+    hideMealInfo()
+  }
 })
