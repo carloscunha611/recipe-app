@@ -1,37 +1,37 @@
 const checkbox = document.querySelector('.checkbox')
 const logo = document.querySelector('.logo')
-
-logo.addEventListener('click', () => {
-  window.location.reload()
-})
-
-checkbox.addEventListener('click', () => {
-  document.body.classList.toggle('light')
-})
-
-const mobile_container = document.querySelector('#mobile-container')
 const meals_el = document.querySelector('#meals')
 const fav_meals = document.querySelector('#fav-meals')
 
-const search_temr = document.querySelector('#search-temr')
+const search_term = document.querySelector('#search-temr')
 const search_btn = document.querySelector('#search')
 
 const meal_info_popup = document.querySelector('#meal-info-popup')
 const meal_info_el = document.querySelector('#meal-info')
 const close_popup = document.querySelector('#close-popup')
 
+if (logo) {
+  logo.addEventListener('click', () => {
+    window.location.reload()
+  })
+}
+
+if (checkbox) {
+  checkbox.addEventListener('click', () => {
+    document.body.classList.toggle('light')
+  })
+}
+
 getRandomMeal()
 fetchFavMeals()
 
 async function getRandomMeal() {
   try {
-    const resp = await fetch(
-      'https://www.themealdb.com/api/json/v1/1/random.php'
-    )
+    const resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php')
     const respData = await resp.json()
     const randomMeal = respData.meals[0]
 
-    addMeal(randomMeal, true)
+    addMeal(randomMeal)
   } catch (error) {
     console.error(
       `An error occurred while trying to generate random meal: ${error}`
@@ -49,8 +49,10 @@ async function getMealById(id) {
     return meal
   } catch (error) {
     console.error(`An error occurred while trying to generate the id: ${error}`)
+    return null
   }
 }
+
 async function getMealBySearch(term) {
   try {
     const resp = await fetch(
@@ -61,31 +63,31 @@ async function getMealBySearch(term) {
     return meals
   } catch (error) {
     console.error(`An error occurred while trying to search: ${error}`)
+    return null
   }
 }
 
-function addMeal(mealData, random = false) {
+function addMeal(mealData) {
   const meal = document.createElement('li')
-
   meal.classList.add('meal-container')
 
-  const build = `
+  const isFavorite = getMealsLS().includes(mealData.idMeal)
+
+  meal.innerHTML = `
   <div class="meal">
     <div class="meal-header">
-       <span class="random"> ${mealData.strCategory} </span>        
-        <img loading='lazy' class = 'meal-img'
+       <span class="random"> ${mealData.strCategory} </span>
+        <img loading='lazy' class='meal-img'
           src="${mealData.strMealThumb}"
           alt="${mealData.strMeal}"
         />
       </div>
     <div class="meal-body">
       <h4>${mealData.strMeal}</h4>
-      <button class="fav-btn" id = 'fav-btn'><i class="ph-fill ph-star"></i></button>
+      <button class="fav-btn ${isFavorite ? 'active' : ''}"><i class="ph-fill ph-star"></i></button>
       </div>
     </div>
       `
-
-  meal.innerHTML = build
 
   const btn = meal.querySelector('.fav-btn')
   btn.addEventListener('click', () => {
@@ -104,11 +106,16 @@ function addMeal(mealData, random = false) {
   img.addEventListener('click', () => {
     showMealInfo(mealData)
   })
+
   meals_el.appendChild(meal)
 }
 
 function addMealLS(mealId) {
   const mealIds = getMealsLS()
+
+  if (mealIds.includes(mealId)) {
+    return
+  }
 
   localStorage.setItem('mealIds', JSON.stringify([...mealIds, mealId]))
 }
@@ -131,33 +138,39 @@ function getMealsLS() {
 async function fetchFavMeals() {
   fav_meals.innerHTML = ''
   const mealIds = getMealsLS()
-  const meals = []
+
   for (let i = 0; i < mealIds.length; i++) {
     const mealId = mealIds[i]
+    const meal = await getMealById(mealId)
 
-    meal = await getMealById(mealId)
-    addMealToFav(meal)
+    if (meal) {
+      addMealToFav(meal)
+    }
   }
 }
 
 function addMealToFav(mealData) {
   const favMeal = document.createElement('li')
   favMeal.innerHTML = `
-  <img loading = 'lazy'
+  <img loading='lazy'
     src="${mealData.strMealThumb}"
     alt="${mealData.strMeal}"
   /><span>${mealData.strMeal}</span>
-  <button class = 'clear'><i class="ph-fill ph-x-circle"></i></button>
+  <button class='clear'><i class="ph-fill ph-x-circle"></i></button>
 `
+
   const btn = favMeal.querySelector('.clear')
   const img = favMeal.querySelector('img')
+
   btn.addEventListener('click', () => {
     removeMealLS(mealData.idMeal)
     fetchFavMeals()
   })
+
   img.addEventListener('click', () => {
     showMealInfo(mealData)
   })
+
   fav_meals.appendChild(favMeal)
 }
 
@@ -167,6 +180,7 @@ function showMealInfo(mealData) {
   const meal_el = document.createElement('div')
   meal_el.classList.add('mael-el')
   const ingredients = []
+
   for (let i = 1; i < 20; i++) {
     if (mealData['strIngredient' + i]) {
       ingredients.push(
@@ -174,6 +188,7 @@ function showMealInfo(mealData) {
       )
     } else break
   }
+
   meal_el.innerHTML = `
     <h1>${mealData.strMeal}</h1>
     <img
@@ -189,43 +204,45 @@ function showMealInfo(mealData) {
       ${ingredients.map(ing => `<li>${ing}</li>`).join('')}
     </ul>
   `
+
   meal_info_el.appendChild(meal_el)
   meal_info_popup.classList.remove('hidden')
 }
 
-search_btn.addEventListener('click', async () => {
+function showNotFoundMessage(term) {
+  const meal = document.createElement('li')
+  meal.classList.add('alert')
+  meal.innerHTML = `<span class="not-found"> "${term}" not found </span>`
+  meals_el.appendChild(meal)
+}
+
+async function handleSearch() {
   meals_el.innerHTML = ''
-  const search = search_temr.value
+  const search = search_term.value.trim()
+
+  if (!search) {
+    getRandomMeal()
+    return
+  }
 
   const meals = await getMealBySearch(search)
 
-  if (meals) {
+  if (meals && meals.length) {
     meals.forEach(meal => {
       addMeal(meal)
     })
+  } else {
+    showNotFoundMessage(search)
   }
-})
+}
 
-search_temr.addEventListener('keypress', async event => {
+search_btn.addEventListener('click', handleSearch)
+
+search_term.addEventListener('keypress', async event => {
   const keyCode = event.keyCode || event.which
-  const meal = document.createElement('li')
-  meal.classList.add('alert')
-
-  const build = `<span class="not-found"> "${search_temr.value}" not found </span>`
 
   if (keyCode === 13) {
-    meals_el.innerHTML = ''
-    const search = search_temr.value
-
-    const meals = await getMealBySearch(search)
-    if (meals) {
-      meals.forEach(meal => {
-        addMeal(meal)
-      })
-    } else {
-      meal.innerHTML = build
-      meals_el.appendChild(meal)
-    }
+    handleSearch()
   }
 })
 

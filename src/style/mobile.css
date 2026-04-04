@@ -1,39 +1,48 @@
-@media (max-width: 428px) {
+@media (max-width: 768px) {
+  .search {
+    justify-content: space-between;
+    padding-inline: 0.75rem;
+  }
+
+  .search h1 {
+    width: 3.4rem;
+    font-size: 0.7rem;
+  }
+
+  .search input {
+    width: calc(100% - 8rem);
+  }
+
   .toggle-switch {
     width: 3rem;
   }
-  .checkbox:checked ~ .slider::before {
-    -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
-  }
 
-  .fav-meals li .clear {
-    opacity: 1;
-    visibility: visible;
-    color: var(--color_primary);
+  .fav-container {
+    min-height: 6.5rem;
+    padding: 0.5rem 0.75rem;
   }
 
   main.mobile-container {
-    position: fixed;
-    top: 4rem;
-    width: 100%;
-    height: 100%;
+    padding-top: 10.8rem;
+  }
+
+  section.meals-content {
+    padding: 1.25rem 0.75rem;
+  }
+
+  ul.meals {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .meal-header img {
     filter: grayscale(0%) brightness(110%) contrast(110%) saturate(110%);
   }
 
-  section.meals-content {
-    top: 1.5rem;
-    padding: 2rem 0;
-  }
-  div.meal {
-    width: 90%;
-  }
-
-  li.meal-container:nth-last-child(1) {
-    padding-bottom: 1rem;
+  .fav-meals li .clear {
+    opacity: 1;
+    visibility: visible;
+    color: var(--color_primary);
+    background: transparent;
   }
 }
