@@ -1,51 +1,54 @@
 .search {
   position: fixed;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
   width: 100%;
-  height: 4rem;
+  height: var(--header-height);
   left: 0;
   top: 0;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   background: var(--color_bg-hero);
   z-index: 999;
+  box-shadow: var(--shadow-b);
 }
 
 .search h1 {
   display: grid;
-  position: absolute;
   text-align: center;
   font-size: 0.8rem;
   cursor: pointer;
   width: 4rem;
-  left: 0rem;
   user-select: none;
 }
 
 .search h1 .n1 {
   color: var(--color_primary);
 }
+
 .search h1 .n2 {
   color: var(--color_secondary);
 }
+
 .search h1 i {
   top: 0.1rem;
   color: var(--color_primary);
 }
 
 .search input {
+  width: min(34rem, 100%);
   background-color: var(--color_bg);
-  border: none;
+  border: 2px solid transparent;
   border-radius: 0.5em;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 0.9rem;
   color: var(--color);
   outline: none;
   transition: all 0.3s ease;
 }
 
-.search input:focus-within {
-  outline: 0.2rem solid var(--color_emphasis);
+.search input:focus-visible {
+  border-color: var(--color_emphasis);
 }
 
 .search button {
@@ -53,10 +56,10 @@
   border: none;
   color: var(--color);
   font-size: 1.3rem;
-  margin-left: 0.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
+
 .search button:hover {
   color: var(--color_primary);
 }
@@ -67,29 +70,36 @@
   align-items: center;
   justify-content: center;
 }
-.fav-container {
-  position: fixed;
-  top: 4rem;
-  left: 0;
-  width: 100%;
-  flex-direction: column;
-  min-height: 8rem;
-  background-color: var(--color_bg);
-  box-shadow: var(--shadow);
-  padding: 0.5rem 0rem;
-  text-align: center;
-  z-index: 999;
-}
 
 .fav-container {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  width: 100%;
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
+  min-height: var(--fav-height);
+  background-color: var(--color_bg);
+  box-shadow: var(--shadow);
+  padding: 0.75rem 1rem;
+  text-align: center;
+  z-index: 998;
+}
+
+.fav-container h3 {
+  font-size: 0.95rem;
 }
 
 .fav-meals {
-  flex-direction: row-reverse;
-  width: 100%;
+  flex-direction: row;
+  justify-content: start;
+  gap: 0.75rem;
+  width: min(72rem, 100%);
+  margin: 0 auto;
   overflow-x: auto;
+  padding-bottom: 0.3rem;
+  scroll-snap-type: x proximity;
 }
 
 .fav-meals li {
@@ -99,15 +109,16 @@
   width: 4.5rem;
   flex: 0 0 auto;
   cursor: pointer;
+  scroll-snap-align: start;
 }
 
 .fav-meals li .clear {
   position: absolute;
   border-radius: 50%;
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0.35);
   color: var(--color);
   border: none;
-  top: -0.1rem;
+  top: -0.25rem;
   right: -0.2rem;
   font-size: 1.2rem;
   cursor: pointer;
@@ -115,6 +126,7 @@
   opacity: 0;
   transition: all 0.3s ease;
 }
+
 .fav-meals li:hover .clear {
   visibility: visible;
   opacity: 1;
@@ -127,7 +139,6 @@
   object-fit: cover;
   height: 4rem;
   width: 4rem;
-  filter: brightness(100%) contrast(100%) saturate(100%);
 }
 
 .fav-meals li span {
@@ -139,16 +150,22 @@
   width: 4.5rem;
 }
 
+.fav-meals .fav-status {
+  width: 100%;
+  text-align: center;
+  color: var(--color_emphasis);
+  font-size: 0.9rem;
+  padding: 0.5rem 0;
+}
+
 .fav-btn.active {
   color: var(--color_secondary);
 }
 
 .toggle-switch {
-  position: absolute;
-  right: 1rem;
-  width: 5rem;
+  width: 3.5rem;
   height: 2rem;
-  margin-left: 1rem;
+  justify-self: end;
 }
 
 .switch-label {
@@ -170,7 +187,6 @@
   width: 100%;
   height: 100%;
   border-radius: 0.1rem;
-  -webkit-transition: 0.3s;
   transition: 0.3s;
   outline: 2px solid var(--color_bg);
 }
@@ -187,19 +203,14 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  -webkit-box-shadow: inset 12px -4px 0px 0px var(--color_bg2);
   box-shadow: inset 12px -4px 0px 0px var(--color_bg2);
   background-color: var(--color_bg-hero);
-  -webkit-transition: 0.3s;
   transition: 0.3s;
 }
 
 .checkbox:checked ~ .slider::before {
-  -webkit-transform: translateX(50px);
-  -ms-transform: translateX(50px);
-  transform: translateX(50px);
+  transform: translateX(28px);
   background-color: var(--color_bg-hero);
-  -webkit-box-shadow: none;
   box-shadow: none;
 }
 
