@@ -1,39 +1,97 @@
-@media (max-width: 428px) {
+@media (max-width: 1024px) {
+  :root {
+    --fav-height: 7rem;
+  }
+
+  ul.meals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --header-height: 4rem;
+    --fav-height: 6.75rem;
+  }
+
+  .search {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    padding-inline: 0.65rem;
+  }
+
+  .search h1 {
+    width: 3.4rem;
+    font-size: 0.7rem;
+  }
+
+  .search input {
+    width: 100%;
+  }
+
   .toggle-switch {
     width: 3rem;
   }
-  .checkbox:checked ~ .slider::before {
-    -webkit-transform: translateX(20px);
-    -ms-transform: translateX(20px);
-    transform: translateX(20px);
-  }
 
-  .fav-meals li .clear {
-    opacity: 1;
-    visibility: visible;
-    color: var(--color_primary);
+  .fav-container {
+    min-height: 6.5rem;
+    padding: 0.5rem 0.75rem;
   }
 
   main.mobile-container {
-    position: fixed;
-    top: 4rem;
-    width: 100%;
-    height: 100%;
+    padding-top: calc(var(--header-height) + var(--fav-height) + 0.75rem);
+  }
+
+  section.meals-content {
+    padding: 1.25rem 0.75rem;
+  }
+
+  ul.meals {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .meal-header img {
     filter: grayscale(0%) brightness(110%) contrast(110%) saturate(110%);
   }
 
-  section.meals-content {
-    top: 1.5rem;
-    padding: 2rem 0;
+  .fav-meals li .clear {
+    opacity: 1;
+    visibility: visible;
+    color: var(--color_primary);
+    background: transparent;
   }
-  div.meal {
-    width: 90%;
+}
+
+@media (max-width: 480px) {
+  :root {
+    --header-height: 3.75rem;
+    --fav-height: 6.5rem;
   }
 
-  li.meal-container:nth-last-child(1) {
-    padding-bottom: 1rem;
+  .search {
+    gap: 0.35rem;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+  }
+
+  .search h1 {
+    width: 3rem;
+    font-size: 0.64rem;
+  }
+
+  .search button {
+    font-size: 1.1rem;
+  }
+
+  .fav-container h3 {
+    font-size: 0.85rem;
+  }
+
+  .fav-meals {
+    gap: 0.5rem;
+  }
+
+  .fav-meals li,
+  .fav-meals li span {
+    width: 4rem;
   }
 }
