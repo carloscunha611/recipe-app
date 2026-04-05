@@ -15,6 +15,8 @@ const meal_info_el = document.querySelector('#meal-info')
 const close_popup = document.querySelector('#close-popup')
 const share_meal_btn = document.querySelector('#share-meal')
 
+const RANDOM_MEALS_COUNT = 6
+
 let lastFocusedElement = null
 let currentMealForShare = null
 let undoTimerId = null
@@ -33,8 +35,16 @@ if (checkbox) {
 }
 
 renderRecentSearches()
-getRandomMeal()
+loadRandomMeals(RANDOM_MEALS_COUNT)
 fetchFavMeals()
+
+async function loadRandomMeals(count = 1) {
+  meals_el.innerHTML = ''
+
+  for (let i = 0; i < count; i++) {
+    await getRandomMeal()
+  }
+}
 
 async function getRandomMeal() {
   try {
@@ -326,8 +336,7 @@ async function handleSearch(forcedTerm = '') {
   const search = (forcedTerm || search_term.value).trim().toLowerCase()
 
   if (!search) {
-    meals_el.innerHTML = ''
-    getRandomMeal()
+    loadRandomMeals(RANDOM_MEALS_COUNT)
     return
   }
 
@@ -355,8 +364,7 @@ if (clear_search_btn) {
   clear_search_btn.addEventListener('click', () => {
     search_term.value = ''
     search_term.focus()
-    meals_el.innerHTML = ''
-    getRandomMeal()
+    loadRandomMeals(RANDOM_MEALS_COUNT)
   })
 }
 
