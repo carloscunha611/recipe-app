@@ -1,7 +1,8 @@
 .popup-info-container,
 .meal-popup,
 .meal-el,
-.close-popup {
+.close-popup,
+.share-meal {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,6 +68,17 @@
   top: 1rem;
   right: 1rem;
   font-size: 1.5rem;
+  color: var(--color);
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.popup .share-meal {
+  position: absolute;
+  top: 1rem;
+  right: 3.25rem;
+  font-size: 1.2rem;
   color: var(--color);
   border: none;
   background-color: transparent;

@@ -31,7 +31,17 @@
           <span class="n1">Cook</span> <span class="n2">Easy</span>
           <i class="ph-fill ph-cooking-pot"></i>
         </h1>
-        <input type="text" id="search-term" placeholder="Search" />
+        <div class="search-input-group">
+          <input
+            type="text"
+            id="search-term"
+            placeholder="Search"
+            aria-label="Campo de busca por receitas"
+          />
+          <button id="clear-search" aria-label="Limpar busca">
+            <i class="ph ph-x"></i>
+          </button>
+        </div>
         <button id="search" aria-label="Buscar receitas">
           <lord-icon
             src="https://cdn.lordicon.com/xfftupfv.json"
@@ -51,19 +61,34 @@
       </header>
 
       <section class="fav-container carousel">
-        <h3>Favorite Meals</h3>
+        <h3>Favorite Meals <span id="fav-count">(0)</span></h3>
         <ul class="fav-meals" id="fav-meals"></ul>
       </section>
 
+      <section class="quick-filters" aria-label="Sugestões de busca">
+        <button class="quick-chip" data-term="chicken">Chicken</button>
+        <button class="quick-chip" data-term="beef">Beef</button>
+        <button class="quick-chip" data-term="pasta">Pasta</button>
+        <button class="quick-chip" data-term="fish">Fish</button>
+      </section>
+
+      <section class="recent-searches">
+        <h4>Buscas recentes</h4>
+        <ul id="recent-searches-list"></ul>
+      </section>
+
       <section class="meals-content">
-        <ul class="meals" id="meals"></ul>
+        <ul class="meals" id="meals" aria-live="polite"></ul>
       </section>
     </main>
 
     <section class="popup-info-container hidden" id="meal-info-popup">
-      <div class="popup">
+      <div class="popup" role="dialog" aria-modal="true" aria-labelledby="meal-title">
         <button id="close-popup" class="close-popup" aria-label="Fechar pop-up">
           <i class="ph-fill ph-x-square"></i>
+        </button>
+        <button id="share-meal" class="share-meal" aria-label="Compartilhar receita">
+          <i class="ph ph-share-network"></i>
         </button>
 
         <div class="meal-popup" id="meal-info"></div>
