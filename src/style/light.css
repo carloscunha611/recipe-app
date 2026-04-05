@@ -30,7 +30,11 @@ body.light .popup {
 body.light .search input,
 body.light .fav-container,
 body.light .popup .close-popup,
+body.light .popup .share-meal,
 body.light .popup p,
-body.light .popup li {
+body.light .popup li,
+body.light .quick-chip,
+body.light .recent-btn,
+body.light #clear-search {
   color: var(--color2);
 }
