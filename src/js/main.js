@@ -38,14 +38,19 @@ fetchFavMeals()
 
 async function getRandomMeal() {
   try {
-    const resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php')
+    const resp = await fetch(
+      'https://www.themealdb.com/api/json/v1/1/random.php'
+    )
     const respData = await resp.json()
     const randomMeal = respData?.meals?.[0]
 
     if (randomMeal) {
       addMeal(randomMeal)
     } else {
-      showMealsStatus('Não foi possível carregar uma receita aleatória.', 'error')
+      showMealsStatus(
+        'Não foi possível carregar uma receita aleatória.',
+        'error'
+      )
     }
   } catch (error) {
     console.error(
@@ -294,10 +299,10 @@ function showMealInfo(mealData) {
 
 function saveRecentSearch(term) {
   const recentTerms = JSON.parse(localStorage.getItem('recentSearches')) || []
-  const updatedTerms = [term, ...recentTerms.filter(item => item !== term)].slice(
-    0,
-    5
-  )
+  const updatedTerms = [
+    term,
+    ...recentTerms.filter(item => item !== term)
+  ].slice(0, 5)
 
   localStorage.setItem('recentSearches', JSON.stringify(updatedTerms))
 }
@@ -311,7 +316,8 @@ function renderRecentSearches() {
   recent_searches_list.innerHTML = ''
 
   if (!recentTerms.length) {
-    recent_searches_list.innerHTML = '<li class="recent-empty">Nenhuma busca recente.</li>'
+    recent_searches_list.innerHTML =
+      '<li class="recent-empty">Nenhuma busca recente.</li>'
     return
   }
 
@@ -407,7 +413,10 @@ async function shareCurrentMeal() {
   const shareData = {
     title: currentMealForShare.strMeal,
     text: `Veja esta receita: ${currentMealForShare.strMeal}`,
-    url: currentMealForShare.strSource || currentMealForShare.strYoutube || window.location.href,
+    url:
+      currentMealForShare.strSource ||
+      currentMealForShare.strYoutube ||
+      window.location.href
   }
 
   try {
@@ -417,7 +426,10 @@ async function shareCurrentMeal() {
     }
 
     await navigator.clipboard.writeText(shareData.url)
-    showMealsStatus('Link da receita copiado para a área de transferência.', 'info')
+    showMealsStatus(
+      'Link da receita copiado para a área de transferência.',
+      'info'
+    )
   } catch (error) {
     console.error(`An error occurred while trying to share meal: ${error}`)
   }
